@@ -31,14 +31,13 @@ document.addEventListener('DOMContentLoaded', async function() {
         const existingUsers = await SecureStorage.getItem('users');
 
         if (!existingUsers) {
-            // Create default user structure
-            // TODO: Update these names to your actual family members
+            // Create default user structure with REAL family names!
             const defaultUsers = {
-                user1: { name: 'Tracy', pin: null }, // Mom
-                user2: { name: 'Jason', pin: null }, // Dad
-                user3: { name: 'Brother 1', pin: null },
-                user4: { name: 'Brother 2', pin: null },
-                user5: { name: 'You', pin: null }
+                user1: { name: 'Tracy', pin: null, role: 'family' }, // Mom
+                user2: { name: 'Jason', pin: null, role: 'family' }, // Dad
+                user3: { name: 'Robbie', pin: null, role: 'family' }, // You (app creator)
+                user4: { name: 'Owen', pin: null, role: 'family' }, // Brother 1
+                user5: { name: 'Ryan', pin: null, role: 'family' }  // Brother 2 (at uni)
             };
 
             // Save to encrypted storage

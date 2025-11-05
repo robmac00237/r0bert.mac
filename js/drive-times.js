@@ -351,7 +351,19 @@ document.addEventListener('DOMContentLoaded', async function() {
 
         // Get saved manual commute data
         const manualCommutes = await SecureStorage.getItem('manualCommutes') || {};
-        const userCommute = manualCommutes[currentUser] || {};
+        let userCommute = manualCommutes[currentUser] || {};
+
+        // If no saved commute data, try to pre-fill from family config
+        if (!userCommute.toWork && typeof getEstimatedCommute !== 'undefined') {
+            const estimatedTime = getEstimatedCommute(currentUser);
+            if (estimatedTime) {
+                userCommute = {
+                    toWork: estimatedTime,
+                    toHome: estimatedTime + 2  // Assume return trip is slightly longer
+                };
+                console.log(`Pre-filled commute time: ${estimatedTime} minutes`);
+            }
+        }
 
         const driveTimesContainer = document.getElementById('drive-times-list');
 

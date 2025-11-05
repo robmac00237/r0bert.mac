@@ -54,10 +54,18 @@ async function loadExistingProfile() {
 
     // Get user profiles
     const profiles = await SecureStorage.getItem('userProfiles') || {};
-    const profile = profiles[currentUser];
+    let profile = profiles[currentUser];
+
+    // If no profile exists, pre-fill from family config
+    if (!profile && typeof prefillSetupForm !== 'undefined') {
+        profile = prefillSetupForm(currentUser);
+        if (profile) {
+            console.log('Pre-filling setup form with family data');
+        }
+    }
 
     if (profile) {
-        // Populate form with existing data
+        // Populate form with existing data or pre-filled data
         document.getElementById('display-name').value = profile.displayName || '';
         document.getElementById('home-address').value = profile.homeAddress || '';
         document.getElementById('work-address').value = profile.workAddress || '';
