@@ -35,7 +35,8 @@ document.addEventListener('DOMContentLoaded', async function() {
 
         } catch (error) {
             console.warn('Google Maps not available:', error.message);
-            showGoogleMapsSetupInstructions();
+            // Show manual mode instead of setup instructions
+            await showManualMode();
         }
     }
 
@@ -340,11 +341,182 @@ document.addEventListener('DOMContentLoaded', async function() {
     }
 
     /* ------------------------------------------
+       MANUAL MODE (NO API REQUIRED!)
+       ------------------------------------------ */
+
+    async function showManualMode() {
+        const currentUser = window.getCurrentUser();
+        const profiles = await SecureStorage.getItem('userProfiles') || {};
+        const profile = profiles[currentUser];
+
+        // Get saved manual commute data
+        const manualCommutes = await SecureStorage.getItem('manualCommutes') || {};
+        const userCommute = manualCommutes[currentUser] || {};
+
+        const driveTimesContainer = document.getElementById('drive-times-list');
+
+        if (!profile || !profile.works) {
+            driveTimesContainer.innerHTML = `
+                <div class="empty-state">
+                    <div class="empty-state-icon">🚗</div>
+                    <p>No work information available</p>
+                    <p style="font-size: 12px; margin-top: 5px;">Complete your profile setup first</p>
+                </div>
+            `;
+            return;
+        }
+
+        driveTimesContainer.innerHTML = `
+            <div class="manual-mode-notice">
+                <h4>📝 Manual Drive Time Mode</h4>
+                <p>Google Maps API not configured. Enter your typical commute times manually.</p>
+            </div>
+
+            <div class="drive-time-card">
+                <h4>🏠 → 🏢 To Work</h4>
+                <div class="manual-input-section">
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>Typical Drive Time (minutes)</label>
+                            <input type="number" id="manual-to-work" class="form-control"
+                                   value="${userCommute.toWork || ''}" placeholder="e.g., 25" min="1" max="180">
+                        </div>
+                        <div class="form-group">
+                            <label>Distance (miles)</label>
+                            <input type="number" id="manual-distance-work" class="form-control"
+                                   value="${userCommute.distanceToWork || ''}" placeholder="e.g., 15" min="0.1" step="0.1">
+                        </div>
+                    </div>
+                    ${profile.usualStartTime && userCommute.toWork ? `
+                        <div class="leave-time-suggestion">
+                            ${calculateLeaveTimeManual(profile.usualStartTime, userCommute.toWork, profile.prepTime)}
+                        </div>
+                    ` : ''}
+                </div>
+            </div>
+
+            <div class="drive-time-card">
+                <h4>🏢 → 🏠 To Home</h4>
+                <div class="manual-input-section">
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>Typical Drive Time (minutes)</label>
+                            <input type="number" id="manual-to-home" class="form-control"
+                                   value="${userCommute.toHome || ''}" placeholder="e.g., 30" min="1" max="180">
+                        </div>
+                        <div class="form-group">
+                            <label>Distance (miles)</label>
+                            <input type="number" id="manual-distance-home" class="form-control"
+                                   value="${userCommute.distanceToHome || ''}" placeholder="e.g., 15" min="0.1" step="0.1">
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="manual-tips">
+                <strong>💡 Tips:</strong>
+                <ul>
+                    <li>Check your commute during your typical work hours</li>
+                    <li>Add 5-10 minutes for heavy traffic times</li>
+                    <li>Update these values if you notice consistent changes</li>
+                    <li>Use your phone's Maps app to get accurate times</li>
+                </ul>
+            </div>
+
+            <button class="btn btn-primary" onclick="window.saveManualCommute()" style="margin-top: 15px;">
+                💾 Save Commute Times
+            </button>
+
+            <div style="margin-top: 20px; padding: 15px; background: #f8f9ff; border-radius: 10px; border-left: 4px solid #667eea;">
+                <strong>Want automatic traffic updates?</strong><br>
+                <small>Add a Google Maps API key to <code>js/maps-config.js</code> when ready!</small>
+            </div>
+        `;
+    }
+
+    /* ------------------------------------------
+       SAVE MANUAL COMMUTE DATA
+       ------------------------------------------ */
+
+    window.saveManualCommute = async function() {
+        const toWork = parseInt(document.getElementById('manual-to-work').value);
+        const toHome = parseInt(document.getElementById('manual-to-home').value);
+        const distanceWork = parseFloat(document.getElementById('manual-distance-work').value);
+        const distanceHome = parseFloat(document.getElementById('manual-distance-home').value);
+
+        // Validation
+        if (!toWork || toWork < 1) {
+            alert('Please enter a valid drive time to work');
+            return;
+        }
+
+        if (!toHome || toHome < 1) {
+            alert('Please enter a valid drive time to home');
+            return;
+        }
+
+        const currentUser = window.getCurrentUser();
+        const manualCommutes = await SecureStorage.getItem('manualCommutes') || {};
+
+        manualCommutes[currentUser] = {
+            toWork: toWork,
+            toHome: toHome,
+            distanceToWork: distanceWork || null,
+            distanceToHome: distanceHome || null,
+            lastUpdated: new Date().toISOString()
+        };
+
+        await SecureStorage.setItem('manualCommutes', manualCommutes);
+
+        window.showNotification('Commute times saved!');
+
+        // Refresh display
+        await showManualMode();
+    };
+
+    /* ------------------------------------------
+       CALCULATE LEAVE TIME (MANUAL MODE)
+       ------------------------------------------ */
+
+    function calculateLeaveTimeManual(arrivalTime, driveTimeMinutes, prepTimeMinutes) {
+        // Parse arrival time (HH:MM format)
+        const [hours, minutes] = arrivalTime.split(':').map(Number);
+
+        // Create date object for today at arrival time
+        const arrivalDate = new Date();
+        arrivalDate.setHours(hours, minutes, 0, 0);
+
+        // Subtract drive time and prep time
+        const totalMinutesToSubtract = driveTimeMinutes + prepTimeMinutes;
+        const leaveDate = new Date(arrivalDate.getTime() - (totalMinutesToSubtract * 60 * 1000));
+
+        const leaveTime = leaveDate.toLocaleTimeString('en-US', {
+            hour: 'numeric',
+            minute: '2-digit',
+            hour12: true
+        });
+
+        return `
+            <div class="leave-suggestion">
+                <span class="suggestion-icon">⏰</span>
+                <span class="suggestion-text">
+                    To arrive by ${window.formatTime(arrivalTime)}, leave by <strong>${leaveTime}</strong>
+                    <br><small>(Includes ${driveTimeMinutes} min drive + ${prepTimeMinutes} min prep time)</small>
+                </span>
+            </div>
+        `;
+    }
+
+    /* ------------------------------------------
        MAKE REFRESH FUNCTION GLOBAL
        ------------------------------------------ */
 
     window.refreshDriveTimes = function() {
-        loadDriveTimes();
+        if (googleMapsLoaded) {
+            loadDriveTimes();
+        } else {
+            showManualMode();
+        }
     };
 
     /* ------------------------------------------

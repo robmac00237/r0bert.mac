@@ -584,6 +584,68 @@
 }
 
 /* ------------------------------------------
+   MANUAL MODE STYLES
+   ------------------------------------------ */
+
+.manual-mode-notice {
+    background: linear-gradient(135deg, #667eea15 0%, #764ba215 100%);
+    padding: 20px;
+    border-radius: 10px;
+    margin-bottom: 20px;
+    border-left: 4px solid #667eea;
+}
+
+.manual-mode-notice h4 {
+    color: #333;
+    margin-bottom: 8px;
+}
+
+.manual-mode-notice p {
+    color: #666;
+    font-size: 14px;
+    margin: 0;
+}
+
+.manual-input-section {
+    margin-top: 15px;
+}
+
+.manual-input-section .form-group label {
+    font-size: 13px;
+    font-weight: 600;
+    color: #555;
+}
+
+.manual-input-section input {
+    font-size: 16px;
+}
+
+.manual-tips {
+    background: #fffbf0;
+    padding: 15px;
+    border-radius: 10px;
+    border-left: 4px solid #ffc107;
+    margin-top: 20px;
+}
+
+.manual-tips strong {
+    color: #f57c00;
+    display: block;
+    margin-bottom: 10px;
+}
+
+.manual-tips ul {
+    margin: 0;
+    padding-left: 20px;
+}
+
+.manual-tips li {
+    color: #666;
+    font-size: 13px;
+    margin-bottom: 8px;
+}
+
+/* ------------------------------------------
    MOBILE RESPONSIVE
    ------------------------------------------ */
 
