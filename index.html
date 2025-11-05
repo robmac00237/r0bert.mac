@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Family Scheduler - Coordinate schedules, shopping, and stay connected">
+    <meta name="theme-color" content="#4CAF50">
+
+    <!-- PWA - Makes this installable as an app -->
+    <link rel="manifest" href="manifest.json">
+    <link rel="apple-touch-icon" href="icon-192.svg">
+
+    <title>Family Scheduler - Login</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body class="login-page">
+    <div class="container">
+        <!-- Login Card -->
+        <div class="login-card">
+            <h1>👨‍👩‍👦 Family Scheduler</h1>
+            <p class="subtitle">Stay connected, organized, together</p>
+
+            <!-- User Selection Dropdown -->
+            <div class="form-group">
+                <label for="user-select">Select Your Profile</label>
+                <select id="user-select" class="form-control">
+                    <option value="">Choose...</option>
+                    <option value="user1">Mom</option>
+                    <option value="user2">Dad</option>
+                    <option value="user3">Brother 1</option>
+                    <option value="user4">Brother 2</option>
+                    <option value="user5">You</option>
+                </select>
+            </div>
+
+            <!-- 4-Digit PIN Input -->
+            <div class="form-group">
+                <label for="pin-input">Enter 4-Digit PIN</label>
+                <input
+                    type="password"
+                    id="pin-input"
+                    class="form-control pin-input"
+                    maxlength="4"
+                    pattern="[0-9]*"
+                    inputmode="numeric"
+                    placeholder="****"
+                >
+            </div>
+
+            <!-- Login Button -->
+            <button id="login-btn" class="btn btn-primary">Login</button>
+
+            <!-- Error Message Area -->
+            <div id="error-message" class="error-message hidden"></div>
+
+            <!-- First Time Setup Link -->
+            <p class="setup-link">
+                <a href="#" id="setup-link">First time? Set up your PIN</a>
+            </p>
+        </div>
+    </div>
+
+    <!-- JavaScript -->
+    <script src="js/auth.js"></script>
+
+    <!-- Service Worker Registration -->
+    <script>
+        // Register service worker for offline support and PWA features
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', function() {
+                navigator.serviceWorker.register('/service-worker.js')
+                    .then(function(registration) {
+                        console.log('Service Worker registered successfully:', registration.scope);
+                    })
+                    .catch(function(error) {
+                        console.log('Service Worker registration failed:', error);
+                    });
+            });
+        }
+    </script>
+</body>
+</html>
