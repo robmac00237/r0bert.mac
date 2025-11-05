@@ -4,13 +4,22 @@ A cross-platform web app for families to coordinate schedules, share grocery lis
 
 ## Features
 
-- **User Authentication** - Secure 4-digit PIN login for each family member
+### Core Features
+- **User Authentication** - Secure 4-digit PIN login with encrypted data storage
+- **First-Time Setup** - Guided questionnaire to collect user preferences and addresses
 - **Work Schedule Calendar** - Share work shifts so everyone knows when you're busy
+- **Drive Times & Traffic** - Real-time commute times with Google Maps traffic data
+- **Smart Leave Reminders** - Calculate when to leave based on traffic and prep time
 - **Shared Grocery List** - Add items with star ratings from family members
 - **Location Sharing** - See where family members are (work, home, etc.)
+
+### Technical Features
+- **Encrypted Storage** - All data encrypted using Web Crypto API
 - **Progressive Web App (PWA)** - Install on any device (Android, iOS, Windows, Mac, Linux)
 - **Offline Support** - Works even without internet connection
 - **Mobile-Friendly** - Responsive design for all screen sizes
+- **Google Maps Integration** - Geocoding, distance matrix, and traffic APIs
+- **Local Hosting Ready** - Can be self-hosted on old laptop (see LOCAL-HOSTING-GUIDE.md)
 
 ## Getting Started
 
@@ -182,6 +191,49 @@ Want to add more features? Here are some ideas:
 5. **Task Lists** - Assign chores and tasks
 6. **Backend Sync** - Connect to a server to sync data across devices
 
+## Google Maps Setup (Optional but Recommended!)
+
+To enable drive times and traffic features, you need a Google Maps API key.
+
+### Get Your Free API Key (5 minutes)
+
+1. Go to [Google Cloud Console](https://console.cloud.google.com/)
+2. Create a new project (e.g., "Family Scheduler")
+3. Enable these APIs:
+   - Maps JavaScript API
+   - Geocoding API
+   - Distance Matrix API
+4. Go to "Credentials" → "Create Credentials" → "API Key"
+5. Copy your API key
+6. Open `js/maps-config.js` and replace `YOUR_API_KEY_HERE` with your key
+7. Refresh the app!
+
+### Cost
+
+**It's FREE for family use!**
+- Google provides $200/month free credit
+- Family app usage: ~$3/month
+- You're well within the free tier!
+
+### Without Google Maps
+
+The app still works without Google Maps! You'll just see setup instructions instead of drive times.
+
+## Local Hosting
+
+Want to host this on your old laptop? Check out the comprehensive guide:
+
+📖 **[LOCAL-HOSTING-GUIDE.md](LOCAL-HOSTING-GUIDE.md)**
+
+Covers:
+- Ubuntu/Linux setup
+- Windows setup
+- Mac setup
+- Network configuration
+- Security best practices
+- Auto-start on boot
+- And much more!
+
 ## Troubleshooting
 
 ### App won't load
@@ -193,10 +245,24 @@ Want to add more features? Here are some ideas:
 - Click "First time? Set up your PIN" to reset
 - Clear browser data and try again
 
+### Setup page doesn't show
+- Complete your first login to trigger setup
+- Check that `crypto-utils.js` is loaded (view page source)
+
+### Drive times not showing
+- Make sure you've added Google Maps API key in `js/maps-config.js`
+- Complete your profile setup with home and work addresses
+- Check browser console for API errors
+
 ### Location not working
 - Check browser permissions (allow location access)
 - Make sure you're using HTTPS or localhost
 - Some browsers require secure connection for GPS
+
+### Data disappeared
+- Check if browser cache was cleared
+- Data is encrypted and stored per-device
+- Use the backup feature (see Local Hosting Guide)
 
 ### PWA not installing
 - Try Chrome or Edge for best PWA support
@@ -208,6 +274,7 @@ Want to add more features? Here are some ideas:
 Questions or issues? Check:
 - Browser console (F12 → Console) for error messages
 - Make sure all files are in the correct folders
+- Verify encryption scripts are loaded
 - Try a different browser
 
 ## License

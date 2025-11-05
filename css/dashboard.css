@@ -409,6 +409,181 @@
 }
 
 /* ------------------------------------------
+   DRIVE TIMES & TRAFFIC STYLES
+   ------------------------------------------ */
+
+.drive-times-container {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.drive-time-card {
+    background: #f8f9ff;
+    padding: 20px;
+    border-radius: 10px;
+    border-left: 4px solid #667eea;
+}
+
+.drive-time-card h4 {
+    margin-bottom: 15px;
+    color: #333;
+    font-size: 18px;
+}
+
+.drive-time-info {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.drive-time-main {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.time-value {
+    font-size: 28px;
+    font-weight: 700;
+    color: #667eea;
+}
+
+.distance-value {
+    font-size: 16px;
+    color: #666;
+}
+
+.drive-time-normal {
+    font-size: 13px;
+    color: #888;
+}
+
+.traffic-info {
+    padding: 10px 15px;
+    border-radius: 8px;
+    font-weight: 600;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.traffic-light {
+    background: #e8f5e9;
+    color: #2e7d32;
+}
+
+.traffic-moderate {
+    background: #fff3e0;
+    color: #f57c00;
+}
+
+.traffic-heavy {
+    background: #ffebee;
+    color: #c62828;
+}
+
+.traffic-delay {
+    font-size: 12px;
+    opacity: 0.9;
+}
+
+.leave-time-suggestion {
+    margin-top: 15px;
+    padding: 15px;
+    background: linear-gradient(135deg, #667eea15 0%, #764ba215 100%);
+    border-radius: 8px;
+}
+
+.leave-suggestion {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+}
+
+.suggestion-icon {
+    font-size: 24px;
+}
+
+.suggestion-text {
+    flex: 1;
+    font-size: 14px;
+    color: #333;
+}
+
+.suggestion-text strong {
+    color: #667eea;
+    font-size: 16px;
+}
+
+.suggestion-text small {
+    color: #666;
+    font-size: 12px;
+}
+
+.setup-instructions {
+    background: #f8f9ff;
+    padding: 30px;
+    border-radius: 10px;
+    border-left: 4px solid #667eea;
+}
+
+.setup-instructions h4 {
+    color: #333;
+    margin-bottom: 10px;
+}
+
+.setup-instructions p {
+    color: #666;
+    margin-bottom: 20px;
+}
+
+.setup-steps {
+    margin: 20px 0;
+}
+
+.setup-steps h5 {
+    color: #667eea;
+    margin-bottom: 10px;
+}
+
+.setup-steps ol {
+    margin-left: 20px;
+}
+
+.setup-steps li {
+    margin-bottom: 8px;
+    color: #333;
+}
+
+.setup-steps ul {
+    margin-left: 20px;
+    margin-top: 5px;
+}
+
+.setup-steps ul li {
+    list-style-type: disc;
+    color: #666;
+}
+
+.setup-steps code {
+    background: #f5f5f5;
+    padding: 2px 6px;
+    border-radius: 3px;
+    font-family: 'Courier New', monospace;
+    font-size: 13px;
+}
+
+.pricing-info {
+    margin-top: 20px;
+    padding: 15px;
+    background: #e8f5e9;
+    border-radius: 8px;
+    color: #2e7d32;
+    font-size: 14px;
+}
+
+/* ------------------------------------------
    MOBILE RESPONSIVE
    ------------------------------------------ */
 

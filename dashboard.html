@@ -32,6 +32,9 @@
             <button class="tab-btn active" data-tab="calendar">
                 📅 Calendar
             </button>
+            <button class="tab-btn" data-tab="drive-times">
+                🚗 Drive Times
+            </button>
             <button class="tab-btn" data-tab="grocery">
                 🛒 Grocery List
             </button>
@@ -75,6 +78,20 @@
                     <div id="events-list" class="events-list">
                         <!-- Events will be added here by JavaScript -->
                     </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Tab Content: Drive Times & Traffic -->
+        <div class="tab-content" id="drive-times-tab">
+            <div class="card">
+                <h3>🚗 Drive Times & Traffic</h3>
+                <p class="card-subtitle">Real-time commute information with traffic updates</p>
+
+                <!-- Drive Times Display -->
+                <div id="drive-times-list" class="drive-times-container">
+                    <!-- Drive time information will be added here by JavaScript -->
+                    <p style="text-align: center; color: #666;">Loading drive times...</p>
                 </div>
             </div>
         </div>
@@ -128,8 +145,11 @@
     </div>
 
     <!-- JavaScript Files -->
+    <script src="js/crypto-utils.js"></script>
+    <script src="js/maps-config.js"></script>
     <script src="js/app.js"></script>
     <script src="js/calendar.js"></script>
+    <script src="js/drive-times.js"></script>
     <script src="js/grocery.js"></script>
     <script src="js/location.js"></script>
 

@@ -1,10 +1,11 @@
 /* ==========================================
    AUTHENTICATION SYSTEM
    This handles user login with PIN codes
+   NOW WITH ENCRYPTION!
    ========================================== */
 
 // Wait for the page to fully load before running any code
-document.addEventListener('DOMContentLoaded', function() {
+document.addEventListener('DOMContentLoaded', async function() {
 
     /* ------------------------------------------
        GET REFERENCES TO HTML ELEMENTS
@@ -22,24 +23,26 @@ document.addEventListener('DOMContentLoaded', function() {
        First time setup - create default PINs
        ------------------------------------------ */
 
-    function initializeUsers() {
-        // localStorage is like a small database in the browser
-        // It stores data even after you close the browser
+    async function initializeUsers() {
+        // SecureStorage is like a small encrypted database in the browser
+        // It stores data even after you close the browser, but ENCRYPTED!
 
         // Check if users already exist
-        if (!localStorage.getItem('users')) {
+        const existingUsers = await SecureStorage.getItem('users');
+
+        if (!existingUsers) {
             // Create default user structure
+            // TODO: Update these names to your actual family members
             const defaultUsers = {
-                user1: { name: 'Mom', pin: null },
-                user2: { name: 'Dad', pin: null },
+                user1: { name: 'Tracy', pin: null }, // Mom
+                user2: { name: 'Jason', pin: null }, // Dad
                 user3: { name: 'Brother 1', pin: null },
                 user4: { name: 'Brother 2', pin: null },
                 user5: { name: 'You', pin: null }
             };
 
-            // Convert JavaScript object to string and save
-            // JSON.stringify turns objects into text format
-            localStorage.setItem('users', JSON.stringify(defaultUsers));
+            // Save to encrypted storage
+            await SecureStorage.setItem('users', defaultUsers);
         }
     }
 
@@ -47,17 +50,17 @@ document.addEventListener('DOMContentLoaded', function() {
        GET USERS FROM STORAGE
        ------------------------------------------ */
 
-    function getUsers() {
-        // JSON.parse turns text back into a JavaScript object
-        return JSON.parse(localStorage.getItem('users'));
+    async function getUsers() {
+        // Get users from encrypted storage
+        return await SecureStorage.getItem('users');
     }
 
     /* ------------------------------------------
        SAVE USERS TO STORAGE
        ------------------------------------------ */
 
-    function saveUsers(users) {
-        localStorage.setItem('users', JSON.stringify(users));
+    async function saveUsers(users) {
+        await SecureStorage.setItem('users', users);
     }
 
     /* ------------------------------------------
@@ -97,7 +100,7 @@ document.addEventListener('DOMContentLoaded', function() {
        LOGIN FUNCTION
        ------------------------------------------ */
 
-    function handleLogin() {
+    async function handleLogin() {
         hideError();
 
         const selectedUser = userSelect.value;
@@ -121,38 +124,61 @@ document.addEventListener('DOMContentLoaded', function() {
             return;
         }
 
-        // Get all users from storage
-        const users = getUsers();
-        const user = users[selectedUser];
+        // Disable login button while checking
+        loginBtn.disabled = true;
+        loginBtn.textContent = 'Logging in...';
 
-        // FIRST TIME SETUP: If user has no PIN yet
-        if (user.pin === null) {
-            // Set the PIN they entered as their new PIN
-            user.pin = enteredPin;
-            saveUsers(users);
+        try {
+            // Get all users from encrypted storage
+            const users = await getUsers();
+            const user = users[selectedUser];
 
-            // Save who is logged in
-            sessionStorage.setItem('currentUser', selectedUser);
-            sessionStorage.setItem('userName', user.name);
+            // FIRST TIME SETUP: If user has no PIN yet
+            if (user.pin === null) {
+                // Set the PIN they entered as their new PIN
+                user.pin = enteredPin;
+                await saveUsers(users);
 
-            // Redirect to dashboard
-            window.location.href = 'dashboard.html';
-            return;
-        }
+                // Save who is logged in
+                sessionStorage.setItem('currentUser', selectedUser);
+                sessionStorage.setItem('userName', user.name);
 
-        // NORMAL LOGIN: Check if PIN matches
-        if (user.pin === enteredPin) {
-            // Success! Save login session
-            sessionStorage.setItem('currentUser', selectedUser);
-            sessionStorage.setItem('userName', user.name);
+                // Redirect to setup page for first-time users
+                window.location.href = 'setup.html';
+                return;
+            }
 
-            // Redirect to dashboard
-            window.location.href = 'dashboard.html';
-        } else {
-            // Wrong PIN
-            showError('Incorrect PIN. Please try again.');
-            pinInput.value = ''; // Clear the input
-            pinInput.focus(); // Put cursor back in PIN field
+            // NORMAL LOGIN: Check if PIN matches
+            if (user.pin === enteredPin) {
+                // Success! Save login session
+                sessionStorage.setItem('currentUser', selectedUser);
+                sessionStorage.setItem('userName', user.name);
+
+                // Check if user has completed profile setup
+                const profiles = await SecureStorage.getItem('userProfiles') || {};
+                const userProfile = profiles[selectedUser];
+
+                if (!userProfile || !userProfile.setupCompleted) {
+                    // Redirect to setup page
+                    window.location.href = 'setup.html';
+                } else {
+                    // Redirect to dashboard
+                    window.location.href = 'dashboard.html';
+                }
+            } else {
+                // Wrong PIN
+                showError('Incorrect PIN. Please try again.');
+                pinInput.value = ''; // Clear the input
+                pinInput.focus(); // Put cursor back in PIN field
+                loginBtn.disabled = false;
+                loginBtn.textContent = 'Login';
+            }
+
+        } catch (error) {
+            console.error('Login error:', error);
+            showError('Login failed. Please try again.');
+            loginBtn.disabled = false;
+            loginBtn.textContent = 'Login';
         }
     }
 
@@ -160,7 +186,7 @@ document.addEventListener('DOMContentLoaded', function() {
        SETUP LINK HANDLER
        ------------------------------------------ */
 
-    setupLink.addEventListener('click', function(e) {
+    setupLink.addEventListener('click', async function(e) {
         e.preventDefault(); // Prevent default link behavior
 
         const selectedUser = userSelect.value;
@@ -170,7 +196,7 @@ document.addEventListener('DOMContentLoaded', function() {
             return;
         }
 
-        const users = getUsers();
+        const users = await getUsers();
         const user = users[selectedUser];
 
         if (user.pin === null) {
@@ -180,7 +206,7 @@ document.addEventListener('DOMContentLoaded', function() {
             const confirm = window.confirm(`Reset PIN for ${user.name}?`);
             if (confirm) {
                 user.pin = null;
-                saveUsers(users);
+                await saveUsers(users);
                 alert('PIN reset! Enter a new 4-digit PIN and click Login.');
             }
         }
@@ -211,7 +237,7 @@ document.addEventListener('DOMContentLoaded', function() {
        INITIALIZE ON PAGE LOAD
        ------------------------------------------ */
 
-    initializeUsers();
+    await initializeUsers();
 });
 
 /* ------------------------------------------

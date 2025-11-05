@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#4CAF50">
+    <title>Family Scheduler - Profile Setup</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/setup.css">
+</head>
+<body class="setup-page">
+    <div class="container">
+        <div class="setup-card">
+            <h1>👋 Welcome, <span id="user-name">User</span>!</h1>
+            <p class="subtitle">Let's set up your profile</p>
+
+            <!-- Progress Indicator -->
+            <div class="progress-bar">
+                <div class="progress-step active" data-step="1">
+                    <div class="step-number">1</div>
+                    <div class="step-label">Personal</div>
+                </div>
+                <div class="progress-step" data-step="2">
+                    <div class="step-number">2</div>
+                    <div class="step-label">Work</div>
+                </div>
+                <div class="progress-step" data-step="3">
+                    <div class="step-number">3</div>
+                    <div class="step-label">Commute</div>
+                </div>
+            </div>
+
+            <!-- Step 1: Personal Info -->
+            <div class="setup-step active" id="step-1">
+                <h3>Personal Information</h3>
+                <p class="step-subtitle">Tell us a bit about yourself</p>
+
+                <div class="form-group">
+                    <label for="display-name">Preferred Name</label>
+                    <input type="text" id="display-name" class="form-control" placeholder="What should we call you?">
+                    <small>This name will be shown to other family members</small>
+                </div>
+
+                <div class="form-group">
+                    <label for="home-address">Home Address</label>
+                    <input type="text" id="home-address" class="form-control" placeholder="123 Main St, City, State ZIP">
+                    <small>Used for calculating drive times</small>
+                </div>
+
+                <button class="btn btn-primary" onclick="nextStep(2)">Next →</button>
+            </div>
+
+            <!-- Step 2: Work Info -->
+            <div class="setup-step" id="step-2">
+                <h3>Work Information</h3>
+                <p class="step-subtitle">Help family know your work schedule</p>
+
+                <div class="form-group">
+                    <label>Do you work?</label>
+                    <div class="radio-group">
+                        <label class="radio-label">
+                            <input type="radio" name="works" value="yes" checked>
+                            <span>Yes, I work</span>
+                        </label>
+                        <label class="radio-label">
+                            <input type="radio" name="works" value="no">
+                            <span>No, I don't work</span>
+                        </label>
+                    </div>
+                </div>
+
+                <div id="work-fields">
+                    <div class="form-group">
+                        <label for="work-address">Work Address</label>
+                        <input type="text" id="work-address" class="form-control" placeholder="456 Business Rd, City, State ZIP">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="work-name">Workplace Name (Optional)</label>
+                        <input type="text" id="work-name" class="form-control" placeholder="e.g., Acme Corp, Main Street Hospital">
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="usual-start">Typical Start Time</label>
+                            <input type="time" id="usual-start" class="form-control">
+                        </div>
+                        <div class="form-group">
+                            <label for="usual-end">Typical End Time</label>
+                            <input type="time" id="usual-end" class="form-control">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="button-row">
+                    <button class="btn btn-secondary" onclick="nextStep(1)">← Back</button>
+                    <button class="btn btn-primary" onclick="nextStep(3)">Next →</button>
+                </div>
+            </div>
+
+            <!-- Step 3: Commute Info -->
+            <div class="setup-step" id="step-3">
+                <h3>Commute Information</h3>
+                <p class="step-subtitle">Help us provide accurate drive times</p>
+
+                <div class="form-group">
+                    <label>Do you drive?</label>
+                    <div class="radio-group">
+                        <label class="radio-label">
+                            <input type="radio" name="drives" value="yes" checked>
+                            <span>Yes, I drive</span>
+                        </label>
+                        <label class="radio-label">
+                            <input type="radio" name="drives" value="no">
+                            <span>No, I use other transportation</span>
+                        </label>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="prep-time">How much time do you need to get ready?</label>
+                    <select id="prep-time" class="form-control">
+                        <option value="15">15 minutes</option>
+                        <option value="30" selected>30 minutes</option>
+                        <option value="45">45 minutes</option>
+                        <option value="60">1 hour</option>
+                        <option value="90">1.5 hours</option>
+                    </select>
+                    <small>We'll remind you to leave with enough time</small>
+                </div>
+
+                <div class="form-group">
+                    <label>Notification Preferences</label>
+                    <div class="checkbox-group">
+                        <label class="checkbox-label">
+                            <input type="checkbox" id="notify-traffic" checked>
+                            <span>Alert me about heavy traffic</span>
+                        </label>
+                        <label class="checkbox-label">
+                            <input type="checkbox" id="notify-leave" checked>
+                            <span>Remind me when to leave</span>
+                        </label>
+                        <label class="checkbox-label">
+                            <input type="checkbox" id="notify-family" checked>
+                            <span>Notify family when I'm at work/home</span>
+                        </label>
+                    </div>
+                </div>
+
+                <div class="button-row">
+                    <button class="btn btn-secondary" onclick="nextStep(2)">← Back</button>
+                    <button class="btn btn-primary" onclick="completeSetup()">Complete Setup</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- JavaScript -->
+    <script src="js/crypto-utils.js"></script>
+    <script src="js/setup.js"></script>
+</body>
+</html>
