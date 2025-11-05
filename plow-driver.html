@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Snow Plow Driver App</title>
+    <link rel="stylesheet" href="css/plow.css">
+    <link rel="manifest" href="plow-manifest.json">
+    <meta name="theme-color" content="#1e40af">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+</head>
+<body class="driver-app">
+
+    <!-- Login Screen -->
+    <div id="loginScreen" class="screen active">
+        <div class="driver-login-container">
+            <div class="app-header">
+                <h1>🚜 Snow Plow Tracker</h1>
+                <p class="subtitle">Driver Portal</p>
+            </div>
+
+            <div class="login-card">
+                <h2>Select Your Plow</h2>
+                <select id="plowSelect" class="plow-select">
+                    <option value="">-- Choose Plow Number --</option>
+                    <option value="plow-1">Plow #1</option>
+                    <option value="plow-2">Plow #2</option>
+                    <option value="plow-3">Plow #3</option>
+                    <option value="plow-4">Plow #4</option>
+                    <option value="plow-5">Plow #5</option>
+                </select>
+
+                <h2>Select Your Route</h2>
+                <select id="routeSelect" class="route-select">
+                    <option value="">-- Choose Route --</option>
+                    <option value="downtown">Downtown Core</option>
+                    <option value="north-end">North End</option>
+                    <option value="south-end">South End</option>
+                    <option value="west-side">West Side</option>
+                    <option value="east-side">East Side</option>
+                    <option value="industrial">Industrial Zone</option>
+                    <option value="highway">Highway 8</option>
+                </select>
+
+                <input type="text" id="driverName" class="driver-input" placeholder="Your Name (Optional)">
+
+                <button id="startBtn" class="btn-primary btn-large">Start Shift</button>
+                <div id="loginError" class="error-message"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Active Tracking Screen -->
+    <div id="trackingScreen" class="screen">
+        <div class="tracking-container">
+            <!-- Header -->
+            <div class="tracking-header">
+                <div class="status-bar active">
+                    <span class="status-indicator"></span>
+                    <span>ACTIVELY PLOWING</span>
+                </div>
+                <div class="driver-info">
+                    <h2 id="activePlowName">Plow #1</h2>
+                    <p id="activeRouteName">Downtown Core</p>
+                </div>
+            </div>
+
+            <!-- Stats Cards -->
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-icon">⏱️</div>
+                    <div class="stat-info">
+                        <p class="stat-label">Time Active</p>
+                        <p class="stat-value" id="activeTime">00:00:00</p>
+                    </div>
+                </div>
+
+                <div class="stat-card">
+                    <div class="stat-icon">📍</div>
+                    <div class="stat-info">
+                        <p class="stat-label">GPS Status</p>
+                        <p class="stat-value" id="gpsStatus">Acquiring...</p>
+                    </div>
+                </div>
+
+                <div class="stat-card">
+                    <div class="stat-icon">🔄</div>
+                    <div class="stat-info">
+                        <p class="stat-label">Last Update</p>
+                        <p class="stat-value" id="lastUpdate">--</p>
+                    </div>
+                </div>
+
+                <div class="stat-card">
+                    <div class="stat-icon">🗺️</div>
+                    <div class="stat-info">
+                        <p class="stat-label">Updates Sent</p>
+                        <p class="stat-value" id="updateCount">0</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Location Display -->
+            <div class="location-card">
+                <h3>Current Location</h3>
+                <div class="location-details">
+                    <p><strong>Latitude:</strong> <span id="currentLat">--</span></p>
+                    <p><strong>Longitude:</strong> <span id="currentLng">--</span></p>
+                    <p><strong>Accuracy:</strong> <span id="accuracy">--</span></p>
+                    <p><strong>Speed:</strong> <span id="speed">--</span></p>
+                </div>
+            </div>
+
+            <!-- Controls -->
+            <div class="control-buttons">
+                <button id="pauseBtn" class="btn-warning btn-large">⏸️ Pause Tracking</button>
+                <button id="resumeBtn" class="btn-success btn-large" style="display:none;">▶️ Resume Tracking</button>
+                <button id="stopBtn" class="btn-danger btn-large">⏹️ End Shift</button>
+            </div>
+
+            <!-- Log -->
+            <div class="activity-log">
+                <h3>Activity Log</h3>
+                <div id="activityLog" class="log-entries">
+                    <p class="log-entry">Waiting for GPS signal...</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script type="module" src="js/plow-driver.js"></script>
+</body>
+</html>

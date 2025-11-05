@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Live Snow Plow Tracker - Miramichi</title>
+    <link rel="stylesheet" href="css/plow.css">
+    <meta name="theme-color" content="#1e40af">
+    <meta name="description" content="Track snow plows in real-time in Miramichi, NB">
+</head>
+<body class="map-viewer">
+
+    <!-- Header -->
+    <header class="map-header">
+        <div class="header-content">
+            <h1>🚜 Live Snow Plow Tracker</h1>
+            <p class="location-tag">Miramichi, NB</p>
+        </div>
+        <div class="header-stats">
+            <div class="stat-badge">
+                <span class="badge-label">Active Plows:</span>
+                <span class="badge-value" id="activePlowCount">0</span>
+            </div>
+            <div class="stat-badge">
+                <span class="badge-label">Last Updated:</span>
+                <span class="badge-value" id="lastMapUpdate">--</span>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <div class="map-layout">
+
+        <!-- Sidebar -->
+        <aside class="plow-sidebar">
+            <div class="sidebar-header">
+                <h2>Active Plows</h2>
+                <button id="refreshBtn" class="btn-icon" title="Refresh">🔄</button>
+            </div>
+
+            <div class="filter-section">
+                <label>
+                    <input type="checkbox" id="filterActive" checked> Show Active Only
+                </label>
+            </div>
+
+            <div id="plowList" class="plow-list">
+                <!-- Plow cards will be dynamically added here -->
+                <div class="no-plows">
+                    <p>No active plows at this time.</p>
+                    <p class="help-text">Snow plows will appear here when drivers start their shifts.</p>
+                </div>
+            </div>
+
+            <div class="legend">
+                <h3>Legend</h3>
+                <div class="legend-item">
+                    <span class="legend-dot active"></span>
+                    <span>Active (< 2 min)</span>
+                </div>
+                <div class="legend-item">
+                    <span class="legend-dot stale"></span>
+                    <span>Stale (2-10 min)</span>
+                </div>
+                <div class="legend-item">
+                    <span class="legend-dot inactive"></span>
+                    <span>Offline (> 10 min)</span>
+                </div>
+            </div>
+        </aside>
+
+        <!-- Map Container -->
+        <main class="map-container">
+            <div id="map" class="map-canvas">
+                <!-- Map will be rendered here -->
+            </div>
+
+            <!-- Map controls overlay -->
+            <div class="map-controls">
+                <button id="centerBtn" class="map-control-btn" title="Center on Miramichi">
+                    🎯 Center Map
+                </button>
+                <button id="toggleMarkersBtn" class="map-control-btn" title="Show/Hide Markers">
+                    📍 Toggle Markers
+                </button>
+            </div>
+
+            <!-- Loading overlay -->
+            <div id="mapLoading" class="map-loading">
+                <div class="spinner"></div>
+                <p>Loading map...</p>
+            </div>
+
+            <!-- No Google Maps fallback -->
+            <div id="noMapFallback" class="no-map-fallback" style="display:none;">
+                <div class="fallback-content">
+                    <h2>📍 Active Plows</h2>
+                    <p>Map visualization requires Google Maps API key.</p>
+                    <p>Showing text-based tracking below:</p>
+                    <div id="fallbackList" class="fallback-list">
+                        <!-- Plow locations will be listed here -->
+                    </div>
+                </div>
+            </div>
+        </main>
+
+    </div>
+
+    <!-- Footer -->
+    <footer class="map-footer">
+        <p>Data updates every 30 seconds • Last database sync: <span id="dbSyncTime">--</span></p>
+        <p class="disclaimer">This service is provided for informational purposes only. Plow locations are approximate.</p>
+    </footer>
+
+    <!-- Load Google Maps API (if available) -->
+    <script src="https://maps.googleapis.com/maps/api/js?key=YOUR_API_KEY_HERE&libraries=places" async defer></script>
+
+    <!-- App Scripts -->
+    <script type="module" src="js/plow-map.js"></script>
+
+</body>
+</html>
