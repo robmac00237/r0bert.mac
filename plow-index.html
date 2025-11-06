@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Snow Plow GPS Tracker - Miramichi</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, #1e40af 0%, #1e3a8a 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 600px;
+            background: white;
+            border-radius: 20px;
+            padding: 40px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            text-align: center;
+        }
+
+        h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+            color: #1e40af;
+        }
+
+        .subtitle {
+            color: #6b7280;
+            margin-bottom: 40px;
+            font-size: 1.1rem;
+        }
+
+        .buttons {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            margin-top: 30px;
+        }
+
+        .btn {
+            display: block;
+            padding: 20px 30px;
+            font-size: 1.2rem;
+            font-weight: 600;
+            text-decoration: none;
+            border-radius: 12px;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+        }
+
+        .btn:active {
+            transform: translateY(0);
+        }
+
+        .btn-driver {
+            background-color: #1e40af;
+            color: white;
+        }
+
+        .btn-public {
+            background-color: #10b981;
+            color: white;
+        }
+
+        .icon {
+            font-size: 2rem;
+            margin-bottom: 10px;
+        }
+
+        .info {
+            margin-top: 40px;
+            padding-top: 30px;
+            border-top: 2px solid #e5e7eb;
+            color: #6b7280;
+            font-size: 0.9rem;
+        }
+
+        .info p {
+            margin: 10px 0;
+        }
+
+        @media (max-width: 480px) {
+            h1 {
+                font-size: 2rem;
+            }
+
+            .container {
+                padding: 30px 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="icon">🚜❄️</div>
+        <h1>Snow Plow Tracker</h1>
+        <p class="subtitle">Miramichi, New Brunswick</p>
+
+        <div class="buttons">
+            <a href="plow-driver.html" class="btn btn-driver">
+                <div>🚜 Driver Portal</div>
+                <small style="font-weight: normal; opacity: 0.9;">For plow drivers</small>
+            </a>
+
+            <a href="plow-map.html" class="btn btn-public">
+                <div>🗺️ Live Plow Map</div>
+                <small style="font-weight: normal; opacity: 0.9;">For residents</small>
+            </a>
+        </div>
+
+        <div class="info">
+            <p><strong>Drivers:</strong> Select your plow and route to start tracking</p>
+            <p><strong>Residents:</strong> View real-time locations of active plows</p>
+            <p style="margin-top: 20px; font-size: 0.8rem;">
+                Data updates every 15-30 seconds • Mobile friendly • Works offline
+            </p>
+        </div>
+    </div>
+</body>
+</html>
