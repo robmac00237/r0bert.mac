@@ -1,10 +1,102 @@
-# 👨‍👩‍👦 Family Scheduler
+# 👨‍👩‍👦 Family Scheduler & 🚜 Snow Plow Tracker
 
-A cross-platform web app for families to coordinate schedules, share grocery lists, and stay connected.
+A collection of cross-platform web apps including:
+- **Family Scheduler** - Coordinate schedules, share grocery lists, and stay connected
+- **Snow Plow GPS Tracker** - Real-time tracking system for municipal snow plows
 
-## Features
+---
 
-### Core Features
+## 🚜 Snow Plow GPS Tracker
+
+### Quick Links
+- **[Driver App](plow-driver.html)** - For plow drivers to start tracking
+- **[Live Map](plow-map.html)** - For residents to view active plows
+- **[Landing Page](plow-index.html)** - Main portal for both drivers and public
+- **[Setup Guide](PLOW-TRACKER-GUIDE.md)** - Complete installation and configuration guide
+
+### What It Does
+Real-time GPS tracking system designed for municipal snow plow operations:
+- **Driver Mobile App** - Plow drivers share their live location while on duty
+- **Public Map Viewer** - Residents see which streets are being plowed in real-time
+- **Real-time Sync** - Updates every 15 seconds using Firebase or local storage
+- **Works Offline** - No internet? Continues tracking and syncs when reconnected
+
+### Key Features
+- 📍 **Live GPS Tracking** - 15-second location updates with accuracy indicators
+- 🗺️ **Interactive Map** - Color-coded markers for each plow with status badges
+- 📱 **Mobile-Friendly** - Install as app on any smartphone (PWA)
+- 🔋 **Battery Efficient** - Optimized GPS polling with wake lock
+- 🌐 **Public Access** - No login required for viewing map
+- 🔄 **Two Modes** - Local storage (test) or Firebase (production)
+- 🚦 **Status Indicators** - Active, Paused, Stale, Offline states
+- 📊 **Activity Logging** - Track shift duration, updates sent, GPS stats
+
+### How It Works
+1. **Drivers** open the app, select their plow number and route, tap "Start Shift"
+2. **GPS tracking** begins automatically, sending location every 15 seconds
+3. **Public map** shows all active plows with routes, speed, and last update time
+4. **Real-time sync** via Firebase (or local storage for testing)
+
+### Quick Start (Test Mode)
+```bash
+# 1. Start local server
+python -m http.server 8000
+
+# 2. Open driver app on phone
+# Visit: http://YOUR-IP:8000/plow-driver.html
+
+# 3. Open map viewer
+# Visit: http://YOUR-IP:8000/plow-map.html
+```
+
+Works immediately with no setup! Uses local storage for testing.
+
+### Production Setup
+For real deployment with multi-device sync:
+1. Set up Firebase Realtime Database (10 minutes, free)
+2. Add Google Maps API key for visual map (optional)
+3. Deploy to GitHub Pages, Netlify, or Firebase Hosting
+4. Share map URL with residents
+
+**See [PLOW-TRACKER-GUIDE.md](PLOW-TRACKER-GUIDE.md) for complete instructions.**
+
+### Files
+```
+Plow Tracker Files:
+├── plow-index.html         # Landing page with driver/public links
+├── plow-driver.html        # Driver mobile app interface
+├── plow-map.html           # Public map viewer
+├── plow-manifest.json      # PWA configuration
+├── css/
+│   └── plow.css            # Styling for all plow apps
+├── js/
+│   ├── firebase-config.js  # Database sync (Firebase + local fallback)
+│   ├── plow-driver.js      # Driver app logic & GPS tracking
+│   └── plow-map.js         # Map viewer logic & real-time display
+└── PLOW-TRACKER-GUIDE.md   # Complete setup & configuration guide
+```
+
+### Technology
+- **HTML5 Geolocation API** - GPS tracking
+- **Firebase Realtime Database** - Cross-device sync (optional)
+- **Google Maps JavaScript API** - Map visualization (optional)
+- **Service Workers** - Offline support & PWA features
+- **Web Crypto API** - Secure data handling
+- **Progressive Web App** - Install on any device
+
+### Live Demo
+Once deployed to GitHub Pages:
+- **Driver Portal:** `https://robmac00237.github.io/r0bert.mac/plow-driver.html`
+- **Public Map:** `https://robmac00237.github.io/r0bert.mac/plow-map.html`
+- **Landing Page:** `https://robmac00237.github.io/r0bert.mac/plow-index.html`
+
+---
+
+## 👨‍👩‍👦 Family Scheduler
+
+### Features
+
+#### Core Features
 - **User Authentication** - Secure 4-digit PIN login with encrypted data storage
 - **First-Time Setup** - Guided questionnaire to collect user preferences and addresses
 - **Work Schedule Calendar** - Share work shifts so everyone knows when you're busy
@@ -70,20 +162,42 @@ This app uses simple web technologies that you're learning:
 
 ```
 r0bert.mac/
+# Family Scheduler
 ├── index.html              # Login page
 ├── dashboard.html          # Main app page
+├── setup.html              # First-time setup wizard
 ├── manifest.json           # PWA configuration
 ├── service-worker.js       # Offline support
 ├── css/
 │   ├── style.css          # General styles
-│   └── dashboard.css      # Dashboard-specific styles
+│   ├── dashboard.css      # Dashboard-specific styles
+│   ├── setup.css          # Setup wizard styles
+│   └── plow.css           # Plow tracker styles
 ├── js/
+│   # Family Scheduler modules
 │   ├── auth.js            # Login/authentication
 │   ├── app.js             # Main dashboard logic
+│   ├── setup.js           # Setup wizard logic
 │   ├── calendar.js        # Work schedule feature
 │   ├── grocery.js         # Grocery list feature
-│   └── location.js        # Location sharing feature
-└── README.md              # This file
+│   ├── location.js        # Location sharing feature
+│   ├── drive-times.js     # Commute time calculator
+│   ├── crypto-utils.js    # Encryption utilities
+│   ├── family-config.js   # Family data configuration
+│   ├── maps-config.js     # Google Maps config
+│   # Plow Tracker modules
+│   ├── firebase-config.js # Firebase/storage integration
+│   ├── plow-driver.js     # Driver app logic
+│   └── plow-map.js        # Map viewer logic
+# Snow Plow Tracker
+├── plow-index.html         # Plow tracker landing page
+├── plow-driver.html        # Driver mobile app
+├── plow-map.html           # Public map viewer
+├── plow-manifest.json      # Plow PWA config
+# Documentation
+├── README.md               # This file
+├── PLOW-TRACKER-GUIDE.md   # Plow tracker setup guide
+└── LOCAL-HOSTING-GUIDE.md  # Self-hosting instructions
 ```
 
 ## Features Explained
@@ -283,4 +397,29 @@ This is a learning project - feel free to modify and use it however you like!
 
 ---
 
-**Built with ❤️ for families who want to stay organized together**
+## 🎯 Project Overview
+
+This repository contains two complete, production-ready web applications:
+
+### 1. Family Scheduler (Original Project)
+- **Purpose:** Help families coordinate schedules and stay connected
+- **Users:** 5 family members with personalized profiles
+- **Tech:** Encrypted localStorage, Google Maps, PWA
+- **Start:** Open `index.html`
+
+### 2. Snow Plow GPS Tracker (New!)
+- **Purpose:** Real-time tracking for municipal snow plows
+- **Users:** Plow drivers + general public
+- **Tech:** Firebase Realtime DB, Geolocation API, Google Maps, PWA
+- **Start:** Open `plow-index.html` or see [PLOW-TRACKER-GUIDE.md](PLOW-TRACKER-GUIDE.md)
+
+Both apps:
+- Work on all devices (phone, tablet, computer)
+- Install as mobile apps (PWA)
+- Work offline
+- No server required (can use Firebase optionally)
+- Free and open source
+
+---
+
+**Built with ❤️ for families who want to stay organized together and cities that want to keep residents informed during winter storms 🚜❄️**
